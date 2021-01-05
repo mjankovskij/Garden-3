@@ -50,7 +50,8 @@
                     })
                     .then(function(response) {
                         if (response.data.error) {
-                            alert(response.data.error)
+                    new Error(response.data.error);
+                    // alert(response.data.error)
                         } else {
                             document.querySelector(`#p${id}.plant`).style.opacity = '0.2';
                             document.querySelector(`#p${id}.plant`).innerHTML = `<div class='uprooted'>${response.data.message}</div>`;
@@ -79,7 +80,8 @@
             })
             .then(function(response) {
                 if (response.data.error) {
-                    alert(response.data.error)
+                    new Error(response.data.error);
+                    // alert(response.data.error)
                 } else {
                     console.log(response.data);
                     for (let i = 0; i < response.data.message.length; i++) {

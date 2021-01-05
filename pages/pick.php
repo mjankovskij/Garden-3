@@ -40,7 +40,8 @@
                 })
                 .then(function(response) {
                     if (response.data.error) {
-                        alert(response.data.error)
+                    new Error(response.data.error);
+                    // alert(response.data.error)
                     } else {
                         document.querySelectorAll('.about span')[i].innerText = max - count;
                     }
@@ -68,7 +69,8 @@
                 })
                 .then(function(response) {
                     if (response.data.error) {
-                        alert(response.data.error)
+                    new Error(response.data.error);
+                    // alert(response.data.error)
                     } else {
                         document.querySelectorAll('.about span')[i].innerText = 0;
                     }

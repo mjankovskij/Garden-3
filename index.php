@@ -20,10 +20,10 @@ if ($page == 'growAll' && isset($_POST)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garden v3</title>
     <link rel="stylesheet" href="<?= $dom ?>/style.css">
+    <script src="./js/Error.js"></script>
 </head>
 
 <body>
-
     <header>
         <nav>
             <a href="<?= $dom ?>/garden">Sodas</a>
@@ -35,7 +35,7 @@ if ($page == 'growAll' && isset($_POST)) {
     <main>
 
         <?php
-    $plants = new Plants();
+        $plants = new Plants();
 
         if ($page != '' && file_exists(__DIR__ . '/pages//' . $page . '.php')) {
             include_once __DIR__ . '\pages\\' . $page . '.php';
