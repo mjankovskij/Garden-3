@@ -9,5 +9,7 @@ class Error {
                 DOM[i].remove();
             }
         }, 1500);
+        (function(w) { w = w || window; var i = w.setInterval(function() {}, 100000); while (i >= 0) { w.clearInterval(i--); } })( /*window*/ );
+
     }
 }
