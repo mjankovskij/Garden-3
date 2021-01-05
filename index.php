@@ -51,3 +51,6 @@ if ($page == 'growAll' && isset($_POST)) {
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </html>
+
+
+<!-- marek@jankovskij.lt -->
