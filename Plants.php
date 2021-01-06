@@ -40,17 +40,17 @@ class Plants
 
     public function getImg()
     {
-        return $this->connection->query("SELECT img FROM garden WHERE id='$this->id' ORDER by id")->fetch_assoc()['img'];
+        return $this->img;
     }
 
     public function getType()
     {
-        return $this->connection->query("SELECT type FROM garden WHERE id='$this->id' ORDER by id")->fetch_assoc()['type'];
+        return $this->type;
     }
 
     public function getCount()
     {
-        return $this->connection->query("SELECT count FROM garden WHERE id='$this->id' ORDER by id")->fetch_assoc()['count'];
+        return $this->count;
     }
 
     public function grow($id, $value)

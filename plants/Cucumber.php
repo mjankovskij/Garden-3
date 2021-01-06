@@ -6,4 +6,5 @@ class Cucumber extends Plants
     {
         return rand(10, 20);
     }
+    
 }

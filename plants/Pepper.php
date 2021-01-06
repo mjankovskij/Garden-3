@@ -6,4 +6,5 @@ class Pepper extends Plants
     {
         return rand(1, 5);
     }
+    
 }
