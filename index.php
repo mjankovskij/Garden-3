@@ -1,12 +1,11 @@
 <?php
 include_once __DIR__ . '/config.php';
+include_once __DIR__ . '/Db.php';
 include_once __DIR__ . '/Plants.php';
-$plants = new Plants();
 
 if ($page == 'growAll' && isset($_POST)) {
-
     foreach ($_POST as $key => $value) {
-        $plants->grow($key, $value);
+        Db::addValue('garden', $key, 'quantity', $value);
     }
     header("Location: $dom/grow");
 }
@@ -31,11 +30,12 @@ if ($page == 'growAll' && isset($_POST)) {
             <a href="<?= $dom ?>/pick">Skynimas</a>
         </nav>
     </header>
-
     <main>
-
         <?php
-        $plants = new Plants();
+// $type = 'Tomato';
+// $img = 2;
+// $value = 0;
+// Plants::insert('garden', ['type' => $type, 'img' => $img, 'count' => $value]);
 
         if ($page != '' && file_exists(__DIR__ . '/pages//' . $page . '.php')) {
             include_once __DIR__ . '\pages\\' . $page . '.php';
@@ -43,9 +43,7 @@ if ($page == 'growAll' && isset($_POST)) {
             include_once __DIR__ . '\pages\garden.php';
         }
         ?>
-
     </main>
-
 </body>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

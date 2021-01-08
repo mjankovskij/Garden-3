@@ -1,41 +1,12 @@
 <?php
+
 class Plants
 {
-    private $id;
-    private $type;
-    private $img;
-    private $count;
-    private $connection;
-
-    public function __construct($id = 0)
-    {
-        $this->connection = new mysqli('localhost', 'root', '', 'sodas');
-        $this->connection->set_charset('utf8');
-        if ($this->connection->query("SELECT id FROM garden WHERE id = '$id'")->num_rows > 0) {
-            $data = $this->connection->query("SELECT * FROM garden WHERE id='$id' ORDER by id")->fetch_assoc();
-            $this->id = $data['id'];
-            $this->type = $data['type'];
-            $this->img = $data['img'];
-            $this->count = $data['count'];
-        }
-    }
+    private $id,$type,$img,$quantity;
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getAllPlants()
-    {
-        $sql = $this->connection->query('SELECT * FROM garden ORDER by id DESC');
-        $array = [];
-        while ($row = $sql->fetch_assoc()) {
-            $this->id = $row['id'];
-            $this->type = $row['type'];
-            $typeUpper = ucfirst($this->type);
-            $array[] = new $typeUpper($this->id);
-        }
-        return $array;
     }
 
     public function getImg()
@@ -48,42 +19,27 @@ class Plants
         return $this->type;
     }
 
-    public function getCount()
+    public function getQuantity()
     {
-        return $this->count;
+        return $this->quantity;
     }
 
-    public function grow($id, $value)
-    {
-        $this->connection->query("UPDATE garden SET count = count + $value WHERE id = '$id'");
-    }
+    // public static function plantNew($type, $image = 1, $value = 0)
+    // {
+    //     $sql = "INSERT INTO garden (type, img , quantity) VALUES ('$type', '$image', '$value')";
+    //     Db::conn()->prepare($sql)->execute([$type, $image, $value]);
+    // }
 
-    public function plantNew($type, $image = 1, $value = 0)
+    public static function uproot($id)
     {
-        $this->connection->multi_query("INSERT INTO garden (type, img , count) VALUES ('$type', '$image', '$value');");
-    }
-
-    public function getLimitedArray($limit)
-    {
-        $array = [];
-        $sql = $this->connection->query("SELECT * FROM garden ORDER by id DESC LIMIT $limit");
-        while ($row = $sql->fetch_assoc()) {
-            $array[] = ['id' => $row['id'], 'img' => $row['img'], 'type' =>  $row['type']];
-        }
-        sort($array);
-        return $array;
-    }
-
-    public function uproot($id)
-    {
-        if ($this->connection->query("SELECT id FROM garden WHERE id = '$id'")->num_rows < 1) {
+        if (!(Db::getQuantity('garden', $id))) {
             return 'Tokiu daržovių nėra.';
         }
-        $this->connection->query("DELETE FROM garden WHERE id='$id'");
+        Db::delete('garden', $id);
         return 'OK';
     }
 
-    public function pick($id, $value)
+    public static function pick($id, $value)
     {
         if (!$id || !$value) {
             return 'Nuskinti nepavyko, prasome pasitikslinti skinama kieki.';
@@ -92,14 +48,13 @@ class Plants
         if ($amount != $value || $amount < 0) {
             return 'Prasome pasitikslinti skinama kieki.';
         }
-        if (!($this->connection->query("SELECT count FROM garden WHERE id = '$id'")->num_rows)) {
+        if (!(Db::getQuantity('garden', $id))) {
             return 'Tokiu daržovių nėra.';
         }
-        if (($this->connection->query("SELECT count FROM garden WHERE id='$id'")->fetch_assoc()['count']) - $amount < 0) {
-            return 'Kiekis negali būti neigiamas.'. ($this->connection->query("SELECT count FROM garden WHERE id='$id'")->fetch_assoc()['count']);
+        if ((Db::getValue('garden', $id, 'quantity')) - $amount < 0) {
+            return 'Kiekis negali būti neigiamas.';
         }
-
-        $this->connection->query("UPDATE garden SET count = count - $amount WHERE id = '$id'");
+        Db::subtractValue('garden', $id, 'quantity', $amount);
         return 'OK';
     }
 }

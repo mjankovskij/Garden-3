@@ -1,8 +1,9 @@
 <?php
 
-class Tomato extends Plants {
-    public function growCount(){
-        return rand(1,10);
+class Tomato extends Plants
+{
+    public function growQuantity()
+    {
+        return rand(1, 10);
     }
-    
 }

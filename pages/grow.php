@@ -3,19 +3,19 @@
         <button type="submit">Auginti</button>
     </div>
     <div class="plants">
-        <?php foreach ($plants->getAllPlants() as $obj) : ?>
+    <?php foreach (Db::getObjects(['table'  => 'garden', 'sort' => 'DESC']) as $obj) : ;?>
             <div class='plant' id='p<?= $obj->getId() ?>'>
                 <img src='<?= $dom ?>/img/<?= $obj->getType() ?>/<?= $obj->getImg() ?>.jpg' alt='plant'>
                 <div class='about'>
                     Nr: <?= $obj->getId() ?> <br>
-                    Kiekis: <?= $obj->getCount() ?><br>
+                    Kiekis: <?= $obj->getQuantity() ?><br>
                     Uzaugs: <?php
                             $typeUpper = ucfirst($obj->getType());
                             $plant =  new $typeUpper;
-                            $growCount = $plant->growCount();
-                            echo $growCount;
+                            $growQuantity = $plant->growQuantity();
+                            echo $growQuantity;
                             ?>
-                    <input type="hidden" name="<?= $obj->getId() ?>" value="<?= $growCount ?>">
+                    <input type="hidden" name="<?= $obj->getId() ?>" value="<?= $growQuantity ?>">
                 </div>
             </div>
         <?php endforeach ?>

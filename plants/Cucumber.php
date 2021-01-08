@@ -2,7 +2,7 @@
 
 class Cucumber extends Plants
 {
-    public function growCount()
+    public function growQuantity()
     {
         return rand(10, 20);
     }

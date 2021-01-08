@@ -2,7 +2,7 @@
 
 $_POST = json_decode(file_get_contents("php://input"), true);
 include_once __DIR__ . '/Plants.php';
-$plants = new Plants();
+include_once __DIR__ . '/Db.php';
 
 if (!$_POST) {
     echo json_encode([
@@ -13,33 +13,33 @@ if (!$_POST) {
 
 // rovimas
 if ($_POST['action'] == 'uproot') {
-    if (($plants->uproot($_POST['id'])) == 'OK') {
+    if ((Plants::uproot($_POST['id'])) == 'OK') {
         echo json_encode([
             'message' => 'Išrautas',
         ]);
     } else {
         echo json_encode([
-            'error' => ($plants->uproot($_POST['id'])),
+            'error' => (Plants::uproot($_POST['id'])),
         ]);
     }
 }
 
 //sodinimas
 if ($_POST['action'] == 'plantNew') {
-    if ($_POST['type'] != 'cucumber' && $_POST['type'] != 'tomato' && $_POST['type'] != 'pepper') {
+    if ($_POST['type'] != 'Cucumber' && $_POST['type'] != 'Tomato' && $_POST['type'] != 'Pepper') {
         echo json_encode([
             'error' => 'Tokiu daržovių nėra.',
         ]);
-    } elseif ($_POST['count'] != (int)$_POST['count'] || $_POST['count'] < 1 || $_POST['count'] > 5) {
+    } elseif ($_POST['quantity'] != (int)$_POST['quantity'] || $_POST['quantity'] < 1 || $_POST['quantity'] > 5) {
         echo json_encode([
             'error' => 'Prašome pasitikslinti sodinamą kiekį (1-5).',
         ]);
     } else {
-        foreach (range(1, $_POST['count']) as $_) {
-            $plants->plantNew($_POST['type'], rand(1, 3));
+        foreach (range(1, $_POST['quantity']) as $_) {
+            Db::insert('garden', ['type' => $_POST['type'], 'img' => rand(1, 3), 'quantity' => 0]);
         }
         echo json_encode([
-            'message' => $plants->getLimitedArray($_POST['count'])
+            'message' => Db::arrayTable(['table'  => 'garden', 'sort' => 'DESC', 'limit' => $_POST['quantity'], 'invert' => 1])
         ]);
     }
 }
@@ -47,17 +47,17 @@ if ($_POST['action'] == 'plantNew') {
 
 //skynimas
 if ($_POST['action'] == 'pick') {
-    if (empty($_POST['id']) && empty($_POST['count'])) {
+    if (empty($_POST['id']) && empty($_POST['quantity'])) {
         echo json_encode([
             'error' => 'Prašome pasitikslinti duomenis.',
         ]);
-    } elseif (($plants->pick($_POST['id'], $_POST['count'])) == 'OK') {
+    } elseif ((Plants::pick($_POST['id'], $_POST['quantity'])) == 'OK') {
         echo json_encode([
-            'message' => $plants->pick($_POST['count'], $_POST['count']),
+            'message' => Plants::pick($_POST['quantity'], $_POST['quantity']),
         ]);
     } else {
         echo json_encode([
-            'error' => ($plants->pick($_POST['id'], $_POST['count'])),
+            'error' => (Plants::pick($_POST['id'], $_POST['quantity'])),
         ]);
     }
 }

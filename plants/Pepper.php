@@ -2,7 +2,7 @@
 
 class Pepper extends Plants
 {
-    public function growCount()
+    public function growQuantity()
     {
         return rand(1, 5);
     }
