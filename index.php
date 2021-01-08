@@ -32,11 +32,6 @@ if ($page == 'growAll' && isset($_POST)) {
     </header>
     <main>
         <?php
-// $type = 'Tomato';
-// $img = 2;
-// $value = 0;
-// Plants::insert('garden', ['type' => $type, 'img' => $img, 'count' => $value]);
-
         if ($page != '' && file_exists(__DIR__ . '/pages//' . $page . '.php')) {
             include_once __DIR__ . '\pages\\' . $page . '.php';
         } else {
