@@ -48,7 +48,7 @@ document.querySelectorAll('.plantNew button')[0].addEventListener('click', (e) =
                 new Error(response.data.error);
                 // alert(response.data.error)
             } else {
-                console.log(response.data);
+                // console.log(response.data);
                 for (let i = 0; i < response.data.message.length; i++) {
                     const data = response.data.message[i];
                     document.querySelector('.plants').insertAdjacentHTML('afterbegin', `<div class='plant' id='p${data.id}'>

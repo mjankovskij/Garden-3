@@ -11,7 +11,8 @@
                     Kiekis: <?= $obj->getQuantity() ?><br>
                     Uzaugs: <?php
                             $typeUpper = ucfirst($obj->getType());
-                            $plant =  new $typeUpper;
+                            $name = 'plants\\'.$typeUpper;
+                            $plant =  new $name;
                             $growQuantity = $plant->growQuantity();
                             echo $growQuantity;
                             ?>

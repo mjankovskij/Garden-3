@@ -1,7 +1,6 @@
 <?php
 include_once __DIR__ . '/config.php';
-include_once __DIR__ . '/Db.php';
-include_once __DIR__ . '/Plants.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 if ($page == 'growAll' && isset($_POST)) {
     foreach ($_POST as $key => $value) {

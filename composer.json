@@ -1,0 +1,14 @@
+{
+    "name": "app/garden",
+    "description": "lesson",
+    "authors": [{
+        "name": "Marek Jankovskij",
+        "email": "marek@jankovskij.lt"
+    }],
+    "autoload": {
+        "psr-4": {
+            "": ""
+        }
+    },
+    "require": {}
+}

@@ -1,8 +1,6 @@
 <?php
-
 $_POST = json_decode(file_get_contents("php://input"), true);
-include_once __DIR__ . '/Plants.php';
-include_once __DIR__ . '/Db.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 if (!$_POST) {
     echo json_encode([
@@ -26,18 +24,11 @@ if ($_POST['action'] == 'uproot') {
 
 //sodinimas
 if ($_POST['action'] == 'plantNew') {
-    if ($_POST['type'] != 'Cucumber' && $_POST['type'] != 'Tomato' && $_POST['type'] != 'Pepper') {
+    if ((Plants::plantNew($_POST['type'], $_POST['quantity'])) != 'OK') {
         echo json_encode([
-            'error' => 'Tokiu daržovių nėra.',
-        ]);
-    } elseif ($_POST['quantity'] != (int)$_POST['quantity'] || $_POST['quantity'] < 1 || $_POST['quantity'] > 5) {
-        echo json_encode([
-            'error' => 'Prašome pasitikslinti sodinamą kiekį (1-5).',
+            'error' => (Plants::plantNew($_POST['type'], $_POST['quantity'])),
         ]);
     } else {
-        foreach (range(1, $_POST['quantity']) as $_) {
-            Db::insert('garden', ['type' => $_POST['type'], 'img' => rand(1, 3), 'quantity' => 0]);
-        }
         echo json_encode([
             'message' => Db::arrayTable(['table'  => 'garden', 'sort' => 'DESC', 'limit' => $_POST['quantity'], 'invert' => 1])
         ]);

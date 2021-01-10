@@ -74,7 +74,7 @@ class Db
         $sql = "INSERT INTO $table ($keys) VALUES ($items)";
         Db::conn()->prepare($sql)->execute($data);
     }
-    
+
     public static function delete($table, $id)
     {
         self::conn()->prepare("DELETE FROM $table WHERE id='$id'")->execute();

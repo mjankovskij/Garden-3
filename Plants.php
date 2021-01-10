@@ -2,7 +2,7 @@
 
 class Plants
 {
-    private $id,$type,$img,$quantity;
+    private $id, $type, $img, $quantity;
 
     public function getId()
     {
@@ -24,11 +24,19 @@ class Plants
         return $this->quantity;
     }
 
-    // public static function plantNew($type, $image = 1, $value = 0)
-    // {
-    //     $sql = "INSERT INTO garden (type, img , quantity) VALUES ('$type', '$image', '$value')";
-    //     Db::conn()->prepare($sql)->execute([$type, $image, $value]);
-    // }
+    public static function plantNew($type, $quantity = 1)
+    {
+        if ($type != 'Cucumber' && $type != 'Tomato' && $type != 'Pepper') {
+            return 'Tokiu daržovių nėra.';
+        }
+        if ($quantity != (int)$quantity || $quantity < 1 || $quantity > 5) {
+            return 'Prašome pasitikslinti sodinamą kiekį (1-5).';
+        }
+        foreach (range(1, $quantity) as $_) {
+            Db::insert('garden', ['type' => $type, 'img' => rand(1, 3), 'quantity' => 0]);
+        }
+        return 'OK';
+    }
 
     public static function uproot($id)
     {
@@ -39,7 +47,7 @@ class Plants
         return 'OK';
     }
 
-    public static function pick($id, $value)
+    public static function pick($id='-1', $value=0)
     {
         if (!$id || !$value) {
             return 'Nuskinti nepavyko, prasome pasitikslinti skinama kieki.';
@@ -58,7 +66,3 @@ class Plants
         return 'OK';
     }
 }
-
-include_once __DIR__ . '/plants/Cucumber.php';
-include_once __DIR__ . '/plants/Tomato.php';
-include_once __DIR__ . '/plants/Pepper.php';

@@ -1,5 +1,9 @@
 <?php
 
+namespace plants;
+
+use Plants;
+
 class Tomato extends Plants
 {
     public function growQuantity()
