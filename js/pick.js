@@ -1,7 +1,7 @@
 const DOM1 = document.querySelectorAll('.pick button#some');
 for (let i = 0; i < DOM1.length; i++) {
     DOM1[i].addEventListener('click', (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         const id = document.querySelectorAll('.pick')[i]['id'];
         const quantity = document.querySelectorAll('input')[i].value;
@@ -32,7 +32,7 @@ for (let i = 0; i < DOM1.length; i++) {
 const DOM2 = document.querySelectorAll('.pick button#all');
 for (let i = 0; i < DOM2.length; i++) {
     DOM2[i].addEventListener('click', (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         const id = document.querySelectorAll('.pick')[i]['id'];
         const max = Number(document.querySelectorAll('.about span')[i].innerText);

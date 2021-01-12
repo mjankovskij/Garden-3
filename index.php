@@ -1,6 +1,5 @@
 <?php
-include_once __DIR__ . '/config.php';
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/config.php';
 
 if ($page == 'growAll' && isset($_POST)) {
     foreach ($_POST as $key => $value) {
@@ -18,7 +17,7 @@ if ($page == 'growAll' && isset($_POST)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garden v3</title>
     <link rel="stylesheet" href="<?= $dom ?>/style.css">
-    <script src="./js/Error.js"></script>
+    <script src="<?= $dom ?>/js/Error.js"></script>
 </head>
 
 <body>

@@ -1,3 +1,4 @@
+<?php defined('DOOR_BELL') || die('Cheater'); ?>
 <div class="plantNew">
     <form>
         <label for="plants">Pasodinti:</label>
@@ -6,10 +7,9 @@
             <option value="Tomato">Pomidorai</option>
             <option value="Pepper">Paprikos</option>
         </select>
-
         <label for="quantity"> kiekis:</label>
         <input type="text" name="quantity" pattern="[0-9]{1,}" title="Įveskite skaičius (1 - 5).">
-        <button type="submit">Sodinti</button>
+        <button type="button">Sodinti</button>
     </form>
 </div>
 

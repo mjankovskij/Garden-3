@@ -1,3 +1,4 @@
+<?php defined('DOOR_BELL') || die('Cheater'); ?>
 <form action="<?= $dom ?>/growAll" method="POST">
     <div class="plantNew">
         <button type="submit">Auginti</button>

@@ -30,7 +30,7 @@ function setUproot(length) {
 }
 
 document.querySelectorAll('.plantNew button')[0].addEventListener('click', (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const type = document.querySelector('.plantNew select').value;
     const quantity = document.querySelector('.plantNew input').value;
     document.querySelector('.plantNew input').value = '';
