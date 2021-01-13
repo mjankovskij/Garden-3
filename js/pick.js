@@ -17,12 +17,14 @@ for (let i = 0; i < DOM1.length; i++) {
                 },
                 url: './axios.php',
             })
-            .then(function(response) {
-                if (response.data.error) {
-                    new Error(response.data.error);
-                    // alert(response.data.error)
+            .then(function() {
+                document.querySelectorAll('.about span')[i].innerText = max - quantity;
+            })
+            .catch(function(error) {
+                if (error.request === undefined) {
+                    new Err('Sistemos klaida.');
                 } else {
-                    document.querySelectorAll('.about span')[i].innerText = max - quantity;
+                    new Err(error.response.data.message);
                 }
             });
     })
@@ -46,12 +48,14 @@ for (let i = 0; i < DOM2.length; i++) {
                 },
                 url: './axios.php',
             })
-            .then(function(response) {
-                if (response.data.error) {
-                    new Error(response.data.error);
-                    // alert(response.data.error)
+            .then(function() {
+                document.querySelectorAll('.about span')[i].innerText = 0;
+            })
+            .catch(function(error) {
+                if (error.request === undefined) {
+                    new Err('Sistemos klaida.');
                 } else {
-                    document.querySelectorAll('.about span')[i].innerText = 0;
+                    new Err(error.response.data.message);
                 }
             });
     })

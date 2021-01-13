@@ -14,15 +14,17 @@ function setUproot(length) {
                     url: './axios.php',
                 })
                 .then(function(response) {
-                    if (response.data.error) {
-                        new Error(response.data.error);
-                        // alert(response.data.error)
+                    document.querySelector(`#p${id}.plant`).style.opacity = '0.2';
+                    document.querySelector(`#p${id}.plant`).innerHTML = `<div class='uprooted'>${response.data.message}</div>`;
+                    setTimeout(() => {
+                        document.querySelector(`#p${id}.plant`).remove();
+                    }, 500);
+                })
+                .catch(function(error) {
+                    if (error.request === undefined) {
+                        new Err('Sistemos klaida.');
                     } else {
-                        document.querySelector(`#p${id}.plant`).style.opacity = '0.2';
-                        document.querySelector(`#p${id}.plant`).innerHTML = `<div class='uprooted'>${response.data.message}</div>`;
-                        setTimeout(() => {
-                            document.querySelector(`#p${id}.plant`).remove();
-                        }, 500);
+                        new Err(error.response.data.message);
                     }
                 });
         })
@@ -44,23 +46,24 @@ document.querySelectorAll('.plantNew button')[0].addEventListener('click', (e) =
             url: './axios.php',
         })
         .then(function(response) {
-            if (response.data.error) {
-                new Error(response.data.error);
-                // alert(response.data.error)
-            } else {
-                // console.log(response.data);
-                for (let i = 0; i < response.data.message.length; i++) {
-                    const data = response.data.message[i];
-                    document.querySelector('.plants').insertAdjacentHTML('afterbegin', `<div class='plant' id='p${data.id}'>
+            for (let i = 0; i < response.data.message.length; i++) {
+                const data = response.data.message[i];
+                document.querySelector('.plants').insertAdjacentHTML('afterbegin', `<div class='plant' id='p${data.id}'>
                 <img src='./img/${data.type}/${data.img}.jpg' alt='plant'>
                 <div class='about'>
                     Nr: ${data.id}<br>
                     Kiekis: 0<br>
-                    <div class='uproot' id='${data.id}'><p>Išrauti</p></div>
+                    <div class='uproot' id='${data.id}'><p>Išrauti</p></div> 
                 </div>
-            </div>`);
-                }
-                setUproot(response.data.message.length);
+                </div>`);
+            }
+            setUproot(response.data.message.length);
+        })
+        .catch(function(error) {
+            if (error.request === undefined) {
+                new Err('Sistemos klaida.');
+            } else {
+                new Err(error.response.data.message);
             }
         });
 })
