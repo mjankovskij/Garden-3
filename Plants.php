@@ -3,6 +3,11 @@
 class Plants
 {
     private $id, $type, $img, $quantity;
+    private static $plants = [
+        'Cucumber' => ['min' => '10', 'max' => '20'],
+        'Pepper' => ['min' => '1', 'max' => '5'],
+        'Tomato' => ['min' => '1', 'max' => '10']
+    ];
 
     public function getId()
     {
@@ -24,9 +29,54 @@ class Plants
         return $this->quantity;
     }
 
+    public function growQuantity()
+    {
+        return rand(self::$plants[$this->type]['min'], self::$plants[$this->type]['max']);
+    }
+
+    public static function growQuantityStatic($id)
+    {
+        $type = Db::getValue('garden', $id, 'type');
+        return rand(self::$plants[$type]['min'], self::$plants[$type]['max']);
+    }
+
+    public static function growAll($obj)
+    {
+        $count = 0;
+        foreach ($obj as $key => $value) {
+            if (!(Db::getQuantity('garden', $key))) {
+                return 'Tokiu daržovių nėra.';
+            }
+            if ($value > 20 || $value < 1) {
+                return 'Tokiu prieaugių nebūna.';
+            }
+            $count++;
+        }
+        if($count<1){
+            return 'Nėra ką auginti.';
+        }
+        $array = [];
+        foreach ($obj as $key => $value) {
+            Db::addValue('garden', $key, 'quantity', $value);
+            $array[] = ['id' => $key, 'quantity' => Db::getValue('garden', $key, 'quantity'), 'grow' => self::growQuantityStatic($key)];
+        }
+        return $array;
+    }
+
+    public static function isPlant($name)
+    {
+        $exists = false;
+        foreach (self::$plants as $key => $_) {
+            if ($key == $name) {
+                $exists = true;
+            }
+        }
+        return $exists;
+    }
+
     public static function plantNew($type, $quantity = 1)
     {
-        if ($type != 'Cucumber' && $type != 'Tomato' && $type != 'Pepper') {
+        if (!self::isPlant($type)) {
             return 'Tokiu daržovių nėra.';
         }
         if ($quantity != (int)$quantity || $quantity < 1 || $quantity > 5) {
@@ -47,7 +97,7 @@ class Plants
         return 'OK';
     }
 
-    public static function pick($id='-1', $value=0)
+    public static function pick($id = '-1', $value = 0)
     {
         if (!$id || !$value) {
             return 'Nuskinti nepavyko, prasome pasitikslinti skinama kieki.';

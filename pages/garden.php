@@ -16,7 +16,7 @@
 <div class="plants">
     <?php foreach (Db::getObjects(['table'  => 'garden', 'sort' => 'DESC']) as $obj) : ;?>
         <div class='plant' id='p<?= $obj->getId() ?>'>
-            <img src='<?= $dom ?>/img/<?= $obj->getType() ?>/<?= $obj->getImg() ?>.jpg' alt='plant'>
+            <img src='<?= URL ?>/img/<?= $obj->getType() ?>/<?= $obj->getImg() ?>.jpg' alt='plant'>
             <div class='about'>
                 Nr: <?= $obj->getId() ?> <br>
                 Kiekis: <?= $obj->getQuantity() ?><br>
@@ -26,4 +26,4 @@
     <?php endforeach ?>
 </div>
 
-<script src="<?= $dom ?>/js/garden.js"></script>
+<script src="<?= URL ?>/js/garden.js"></script>

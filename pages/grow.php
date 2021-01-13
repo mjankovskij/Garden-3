@@ -1,24 +1,21 @@
 <?php defined('DOOR_BELL') || die('Cheater'); ?>
-<form action="<?= $dom ?>/growAll" method="POST">
+<form id='growAll'>
     <div class="plantNew">
-        <button type="submit">Auginti</button>
+        <button type="button">Auginti</button>
     </div>
     <div class="plants">
     <?php foreach (Db::getObjects(['table'  => 'garden', 'sort' => 'DESC']) as $obj) : ;?>
-            <div class='plant' id='p<?= $obj->getId() ?>'>
-                <img src='<?= $dom ?>/img/<?= $obj->getType() ?>/<?= $obj->getImg() ?>.jpg' alt='plant'>
+            <div class='plant'>
+                <img src='<?= URL ?>/img/<?= $obj->getType() ?>/<?= $obj->getImg() ?>.jpg' alt='plant'>
                 <div class='about'>
                     Nr: <?= $obj->getId() ?> <br>
-                    Kiekis: <?= $obj->getQuantity() ?><br>
-                    Uzaugs: <?php
-                            $typeUpper = ucfirst($obj->getType());
-                            $plant =  new ('plants\\'.$typeUpper);
-                            $growQuantity = $plant->growQuantity();
-                            echo $growQuantity;
-                            ?>
-                    <input type="hidden" name="<?= $obj->getId() ?>" value="<?= $growQuantity ?>">
+                    Kiekis: <span id='k<?= $obj->getId() ?>'><?= $obj->getQuantity() ?></span><br>
+                    Uzaugs: <span id='u<?= $obj->getId() ?>'><?= $growQuantity=$obj->growQuantity(); ?></span>
+                    <input type="hidden" name="<?= $obj->getId() ?>" value="<?= $growQuantity ?>" id="d<?= $obj->getId() ?>">
                 </div>
             </div>
         <?php endforeach ?>
     </div>
 </form>
+
+<script src="<?= URL ?>/js/grow.js"></script>

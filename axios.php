@@ -1,12 +1,12 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 $data = json_decode(file_get_contents("php://input"));
 
 if (!$data) {
     http_response_code(400);
     echo json_encode([
-        'error' => 'Klaida.',
+        'message' => 'Klaida.',
     ]);
     die;
 }
@@ -37,12 +37,10 @@ if ($data->action == 'uproot') {
     } else {
         http_response_code(400);
         echo json_encode([
-            'error' => (Plants::uproot($data->id)),
+            'message' => (Plants::uproot($data->id)),
         ]);
     }
 }
-
-
 
 //skynimas
 if ($data->action == 'pick') {
@@ -60,6 +58,21 @@ if ($data->action == 'pick') {
         http_response_code(400);
         echo json_encode([
             'message' => (Plants::pick($data->id, $data->quantity)),
+        ]);
+    }
+}
+
+if ($data->action == 'growAll') {
+    $action = Plants::growAll($data->obj);
+    if (gettype($action) != 'array') {
+        http_response_code(400);
+        echo json_encode([
+            'message' => $action,
+        ]);
+    }else{
+        http_response_code(200);
+        echo json_encode([
+            'message' => $action
         ]);
     }
 }
