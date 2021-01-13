@@ -2,11 +2,6 @@
 
 class Db
 {
-    // public static function conn()
-    // {
-    //     return new mysqli('localhost', 'root', '', 'sodas');
-    // }
-
     public final static function conn()
     {
         return new PDO('mysql:host=localhost;dbname=sodas', 'root', '');
