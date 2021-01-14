@@ -1,34 +1,27 @@
 <?php
-header('Content-Type: application/json');
-require_once __DIR__ . '/vendor/autoload.php';
-$data = json_decode(file_get_contents("php://input"));
-
-if (!$data) {
-    http_response_code(400);
-    echo json_encode([
-        'message' => 'Klaida.',
-    ]);
-    die;
-}
 
 //sodinimas
-if ($data->action == 'plantNew') {
+if (PAGE == 'plantNew') {
+    header('Content-Type: application/json');
+    $data = json_decode(file_get_contents("php://input"));
     if ((Plants::plantNew($data->type, $data->quantity)) != 'OK') {
         http_response_code(400);
         echo json_encode([
             'message' => (Plants::plantNew($data->type, $data->quantity)),
         ]);
-        die;
     } else {
         http_response_code(201);
         echo json_encode([
             'message' => Db::arrayTable(['table'  => 'garden', 'sort' => 'DESC', 'limit' => $data->quantity, 'invert' => 1])
         ]);
     }
+    die;
 }
 
 // rovimas
-if ($data->action == 'uproot') {
+if (PAGE == 'uproot') {
+    header('Content-Type: application/json');
+    $data = json_decode(file_get_contents("php://input"));
     if ((Plants::uproot($data->id)) == 'OK') {
         http_response_code(200);
         echo json_encode([
@@ -40,10 +33,13 @@ if ($data->action == 'uproot') {
             'message' => (Plants::uproot($data->id)),
         ]);
     }
+    die;
 }
 
 //skynimas
-if ($data->action == 'pick') {
+if (PAGE == 'pickPlants') {
+    header('Content-Type: application/json');
+    $data = json_decode(file_get_contents("php://input"));
     if (empty($data->id) && empty($data->quantity)) {
         http_response_code(400);
         echo json_encode([
@@ -60,19 +56,24 @@ if ($data->action == 'pick') {
             'message' => (Plants::pick($data->id, $data->quantity)),
         ]);
     }
+    die;
 }
 
-if ($data->action == 'growAll') {
-    $action = Plants::growAll($data->obj);
+//auginimas visu augalu
+if (PAGE == 'growAll') {
+    header('Content-Type: application/json');
+    $data = json_decode(file_get_contents("php://input"));
+    $action = Plants::growAll();
     if (gettype($action) != 'array') {
         http_response_code(400);
         echo json_encode([
             'message' => $action,
         ]);
-    }else{
+    } else {
         http_response_code(200);
         echo json_encode([
             'message' => $action
         ]);
     }
+    die;
 }

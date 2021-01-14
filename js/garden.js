@@ -8,10 +8,9 @@ function setUproot(length) {
             axios({
                     method: 'post',
                     data: {
-                        action: 'uproot',
                         id: id,
                     },
-                    url: './axios.php',
+                    url: './uproot',
                 })
                 .then(function(response) {
                     document.querySelector(`#p${id}.plant`).style.opacity = '0.2';
@@ -39,11 +38,10 @@ document.querySelectorAll('.plantNew button')[0].addEventListener('click', (e) =
     axios({
             method: 'post',
             data: {
-                action: 'plantNew',
                 type: type,
                 quantity: quantity,
             },
-            url: './axios.php',
+            url: './plantNew',
         })
         .then(function(response) {
             for (let i = 0; i < response.data.message.length; i++) {

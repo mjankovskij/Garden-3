@@ -2,6 +2,11 @@
 
 class Db
 {
+    // public static function conn()
+    // {
+    //     return new mysqli('localhost', 'root', '', 'sodas');
+    // }
+
     public final static function conn()
     {
         return new PDO('mysql:host=localhost;dbname=sodas', 'root', '');
@@ -37,7 +42,7 @@ class Db
         return $result;
     }
 
-    public final static function getQuantity($table, $id)
+    public final static function idExists($table, $id)
     {
         return self::conn()->query("SELECT count(*) FROM $table WHERE id = '$id'")->fetchColumn(); 
     }
@@ -47,6 +52,12 @@ class Db
         $pdod = self::conn()->prepare("SELECT $value FROM $table WHERE id=$id");
         $pdod->execute();
         return $pdod->fetch()[$value];
+    }
+
+    public final static function updateValue($table, $id, $value, $amount)
+    {
+        $sql = "UPDATE $table SET $value = $amount WHERE id = '$id'";
+        self::conn()->prepare($sql)->execute([$value]);
     }
 
     public final static function addValue($table, $id, $value, $amount)

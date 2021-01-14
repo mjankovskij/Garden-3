@@ -10,17 +10,16 @@ DOM.addEventListener('click', (e) => {
     axios({
             method: 'post',
             data: {
-                action: 'growAll',
                 obj: obj
             },
-            url: './axios.php',
+            url: './growAll',
         })
         .then(function(response) {
             const data = response.data.message;
             for (let i = 0; i < data.length; i++) {
                 document.querySelector(`span#k${data[i].id}`).innerText = data[i].quantity;
-                document.querySelector(`span#u${data[i].id}`).innerText = data[i].grow;
-                document.querySelector(`input#d${data[i].id}`).value = data[i].grow;
+                document.querySelector(`span#u${data[i].id}`).innerText = data[i].willGrow;
+                document.querySelector(`input#d${data[i].id}`).value = data[i].willGrow;
             }
         })
         .catch(function(error) {

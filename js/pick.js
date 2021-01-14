@@ -11,11 +11,10 @@ for (let i = 0; i < DOM1.length; i++) {
         axios({
                 method: 'post',
                 data: {
-                    action: 'pick',
                     id: id,
                     quantity: quantity,
                 },
-                url: './axios.php',
+                url: './pickPlants',
             })
             .then(function() {
                 document.querySelectorAll('.about span')[i].innerText = max - quantity;
@@ -42,11 +41,10 @@ for (let i = 0; i < DOM2.length; i++) {
         axios({
                 method: 'post',
                 data: {
-                    action: 'pick',
                     id: id,
                     quantity: max,
                 },
-                url: './axios.php',
+                url: './pickPlants',
             })
             .then(function() {
                 document.querySelectorAll('.about span')[i].innerText = 0;

@@ -2,12 +2,8 @@
 
 class Plants
 {
-    private $id, $type, $img, $quantity;
-    private static $plants = [
-        'Cucumber' => ['min' => '10', 'max' => '20'],
-        'Pepper' => ['min' => '1', 'max' => '5'],
-        'Tomato' => ['min' => '1', 'max' => '10']
-    ];
+    private $id, $type, $img, $quantity, $willGrow;
+    private static $plants = ['Cucumber', 'Pepper', 'Tomato'];
 
     public function getId()
     {
@@ -29,45 +25,51 @@ class Plants
         return $this->quantity;
     }
 
-    public function growQuantity()
+    public function getWillGrow()
     {
-        return rand(self::$plants[$this->type]['min'], self::$plants[$this->type]['max']);
+        return $this->willGrow;
     }
 
-    public static function growQuantityStatic($id)
+    public static function growAll()
     {
-        $type = Db::getValue('garden', $id, 'type');
-        return rand(self::$plants[$type]['min'], self::$plants[$type]['max']);
+        foreach (Db::arrayTable(['table'  => 'garden']) as $item) {
+            Db::addValue('garden', $item['id'], 'quantity', $item['willGrow']);
+            if ($item['type'] == 'Cucumber') $rand = rand(10, 20);
+            if ($item['type'] == 'Tomato') $rand = rand(1, 10);
+            if ($item['type'] == 'Pepper') $rand = rand(1, 5);
+            Db::updateValue('garden', $item['id'], 'willGrow', $rand);
+        }
+        return Db::arrayTable(['table'  => 'garden']);
     }
 
-    public static function growAll($obj)
-    {
-        $count = 0;
-        foreach ($obj as $key => $value) {
-            if (!(Db::getQuantity('garden', $key))) {
-                return 'Tokiu daržovių nėra.';
-            }
-            if ($value > 20 || $value < 1) {
-                return 'Tokiu prieaugių nebūna.';
-            }
-            $count++;
-        }
-        if($count<1){
-            return 'Nėra ką auginti.';
-        }
-        $array = [];
-        foreach ($obj as $key => $value) {
-            Db::addValue('garden', $key, 'quantity', $value);
-            $array[] = ['id' => $key, 'quantity' => Db::getValue('garden', $key, 'quantity'), 'grow' => self::growQuantityStatic($key)];
-        }
-        return $array;
-    }
-
+    // public static function growAll2($obj)
+    // {
+    //     $count = 0;
+    //     foreach ($obj as $key => $value) {
+    //         if (!(Db::idExists('garden', $key))) {
+    //             return 'Tokiu daržovių nėra.';
+    //         }
+    //         if ($value > 20 || $value < 1) {
+    //             return 'Tokiu prieaugių nebūna.';
+    //         }
+    //         $count++;
+    //     }
+    //     if ($count < 1) {
+    //         return 'Nėra ką auginti.';
+    //     }
+    //     $array = [];
+    //     foreach ($obj as $key => $value) {
+    //         Db::addValue('garden', $key, 'quantity', $value);
+    //         $array[] = ['id' => $key, 'quantity' => Db::getValue('garden', $key, 'quantity'), 'grow' => self::growQuantityStatic($key)];
+    //     }
+    //     return $array;
+    // }
+    
     public static function isPlant($name)
     {
         $exists = false;
-        foreach (self::$plants as $key => $_) {
-            if ($key == $name) {
+        foreach (self::$plants as $item) {
+            if ($item == $name) {
                 $exists = true;
             }
         }
@@ -90,7 +92,7 @@ class Plants
 
     public static function uproot($id)
     {
-        if (!(Db::getQuantity('garden', $id))) {
+        if (!(Db::idExists('garden', $id))) {
             return 'Tokiu daržovių nėra.';
         }
         Db::delete('garden', $id);
@@ -104,10 +106,10 @@ class Plants
         }
         $amount = preg_replace('/[^0-9]/', '', $value);
         if ($amount != $value || $amount < 0) {
-            return 'Prasome pasitikslinti skinama kieki.';
+            return 'Prašome patikslinti skynamą kiekį.';
         }
-        if (!(Db::getQuantity('garden', $id))) {
-            return 'Tokiu daržovių nėra.';
+        if (!(Db::idExists('garden', $id))) {
+            return 'Tokių daržovių nėra.';
         }
         if ((Db::getValue('garden', $id, 'quantity')) - $amount < 0) {
             return 'Kiekis negali būti neigiamas.';

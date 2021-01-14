@@ -10,8 +10,8 @@
                 <div class='about'>
                     Nr: <?= $obj->getId() ?> <br>
                     Kiekis: <span id='k<?= $obj->getId() ?>'><?= $obj->getQuantity() ?></span><br>
-                    Uzaugs: <span id='u<?= $obj->getId() ?>'><?= $growQuantity=$obj->growQuantity(); ?></span>
-                    <input type="hidden" name="<?= $obj->getId() ?>" value="<?= $growQuantity ?>" id="d<?= $obj->getId() ?>">
+                    Uzaugs: <span id='u<?= $obj->getId() ?>'><?= $obj->getWillGrow(); ?></span>
+                    <input type="hidden" name="<?= $obj->getId() ?>" value="<?= $obj->getWillGrow(); ?>" id="d<?= $obj->getId() ?>">
                 </div>
             </div>
         <?php endforeach ?>
