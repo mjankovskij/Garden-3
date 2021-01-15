@@ -24,6 +24,7 @@ class Db
         $objects = $quer->fetchAll(PDO::FETCH_CLASS, 'Plants');
         // foreach ($objects as &$item) $item = new $item->type;
         // _c($objects);
+        if (isset($obj['invert']) && $obj['invert']) sort($objects);
         return $objects;
     }
 
@@ -42,21 +43,24 @@ class Db
         return $result;
     }
 
-    public final static function idExists($table, $id)
+    public final static function isExists($table, $key)
     {
-        return self::conn()->query("SELECT count(*) FROM $table WHERE id = '$id'")->fetchColumn(); 
+        $stm = self::conn()->prepare("select count(*) from `$table` where `$key[0]`=:$key[0]");
+        $stm->bindParam(":$key[0]", $key[1]);
+        $stm->execute();
+        return $stm->fetchColumn();
     }
 
-    public final static function getValue($table, $id, $value)
+    public final static function getValue($table, $key, $value)
     {
-        $pdod = self::conn()->prepare("SELECT $value FROM $table WHERE id=$id");
+        $pdod = self::conn()->prepare("SELECT $value FROM $table WHERE $key[0] = '$key[1]'");
         $pdod->execute();
         return $pdod->fetch()[$value];
     }
 
-    public final static function updateValue($table, $id, $value, $amount)
+    public final static function updateValue($table, $key, $value, $amount)
     {
-        $sql = "UPDATE $table SET $value = $amount WHERE id = '$id'";
+        $sql = "UPDATE $table SET $value = $amount WHERE $key[0] = '$key[1]'";
         self::conn()->prepare($sql)->execute([$value]);
     }
 
@@ -72,10 +76,11 @@ class Db
         self::conn()->prepare($sql)->execute([$value]);
     }
 
-    public final static function insert($table, $data){
-        $items = '\''.implode('\', \'', $data).'\'';
+    public final static function insert($table, $data)
+    {
+        $items = '\'' . implode('\', \'', $data) . '\'';
         $array = [];
-        foreach($data as $key=>$_) $array[] = $key;
+        foreach ($data as $key => $_) $array[] = $key;
         $keys = implode(', ', $array);
         $sql = "INSERT INTO $table ($keys) VALUES ($items)";
         Db::conn()->prepare($sql)->execute($data);

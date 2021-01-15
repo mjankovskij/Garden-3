@@ -11,8 +11,15 @@ if (PAGE == 'plantNew') {
         ]);
     } else {
         http_response_code(201);
+        $array = [];
+        foreach (Db::getObjects(['table'  => 'garden', 'sort' => 'DESC', 'limit' => $data->quantity, 'invert' => 1]) as $key=>&$item) {
+            $array[$key]['id'] = $item->getId();
+            $array[$key]['type'] = $item->getType();
+            $array[$key]['img'] = $item->getImg();
+            $array[$key]['currentPrice'] = Currency::convert($item->getPrice(), 'USD');
+        }
         echo json_encode([
-            'message' => Db::arrayTable(['table'  => 'garden', 'sort' => 'DESC', 'limit' => $data->quantity, 'invert' => 1])
+            'message' => $array
         ]);
     }
     die;

@@ -20,6 +20,7 @@
             <div class='about'>
                 Nr: <?= $obj->getId() ?> <br>
                 Kiekis: <?= $obj->getQuantity() ?><br>
+                Kaina/vnt.: <?= Currency::convert($obj->getPrice(), CURRENCY) ?><br>
                 <div class='uproot' id='<?= $obj->getId() ?>'><p>Išrauti</p></div>
             </div>
         </div>

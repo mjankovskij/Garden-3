@@ -3,7 +3,16 @@
 class Plants
 {
     private $id, $type, $img, $quantity, $willGrow;
-    private static $plants = ['Cucumber', 'Pepper', 'Tomato'];
+    private static $plants = [
+        'Cucumber' => ['min' => 10, 'max' => 20, 'price' => 1],
+        'Tomato' => ['min' => 1, 'max' => 10, 'price' => 2],
+        'Pepper' => ['min' => 1, 'max' => 5, 'price' => 3]
+    ];
+
+    public function getPrice()
+    {
+        return self::$plants[$this->type]['price'];
+    }
 
     public function getId()
     {
@@ -34,42 +43,17 @@ class Plants
     {
         foreach (Db::arrayTable(['table'  => 'garden']) as $item) {
             Db::addValue('garden', $item['id'], 'quantity', $item['willGrow']);
-            if ($item['type'] == 'Cucumber') $rand = rand(10, 20);
-            if ($item['type'] == 'Tomato') $rand = rand(1, 10);
-            if ($item['type'] == 'Pepper') $rand = rand(1, 5);
-            Db::updateValue('garden', $item['id'], 'willGrow', $rand);
+            $rand = rand(self::$plants[$item['type']]['min'], self::$plants[$item['type']]['max']);
+            Db::updateValue('garden', ['id', $item['id']], 'willGrow', $rand);
         }
         return Db::arrayTable(['table'  => 'garden']);
     }
 
-    // public static function growAll2($obj)
-    // {
-    //     $count = 0;
-    //     foreach ($obj as $key => $value) {
-    //         if (!(Db::idExists('garden', $key))) {
-    //             return 'Tokiu daržovių nėra.';
-    //         }
-    //         if ($value > 20 || $value < 1) {
-    //             return 'Tokiu prieaugių nebūna.';
-    //         }
-    //         $count++;
-    //     }
-    //     if ($count < 1) {
-    //         return 'Nėra ką auginti.';
-    //     }
-    //     $array = [];
-    //     foreach ($obj as $key => $value) {
-    //         Db::addValue('garden', $key, 'quantity', $value);
-    //         $array[] = ['id' => $key, 'quantity' => Db::getValue('garden', $key, 'quantity'), 'grow' => self::growQuantityStatic($key)];
-    //     }
-    //     return $array;
-    // }
-    
     public static function isPlant($name)
     {
         $exists = false;
-        foreach (self::$plants as $item) {
-            if ($item == $name) {
+        foreach (self::$plants as $key => $_) {
+            if ($key == $name) {
                 $exists = true;
             }
         }
@@ -85,21 +69,26 @@ class Plants
             return 'Prašome pasitikslinti sodinamą kiekį (1-5).';
         }
         foreach (range(1, $quantity) as $_) {
-            Db::insert('garden', ['type' => $type, 'img' => rand(1, 3), 'quantity' => 0]);
+            Db::insert('garden', [
+                'type' => $type,
+                'img' => rand(1, 3),
+                'quantity' => 0,
+                'willGrow' => rand(self::$plants[$type]['min'], self::$plants[$type]['max'])
+            ]);
         }
         return 'OK';
     }
 
     public static function uproot($id)
     {
-        if (!(Db::idExists('garden', $id))) {
+        if (!(Db::isExists('garden', ['id', $id]))) {
             return 'Tokiu daržovių nėra.';
         }
         Db::delete('garden', $id);
         return 'OK';
     }
 
-    public static function pick($id = '-1', $value = 0)
+    public static function pick($id = '0', $value = 0)
     {
         if (!$id || !$value) {
             return 'Nuskinti nepavyko, prasome pasitikslinti skinama kieki.';
@@ -108,10 +97,10 @@ class Plants
         if ($amount != $value || $amount < 0) {
             return 'Prašome patikslinti skynamą kiekį.';
         }
-        if (!(Db::idExists('garden', $id))) {
+        if (!(Db::isExists('garden', ['id', $id]))) {
             return 'Tokių daržovių nėra.';
         }
-        if ((Db::getValue('garden', $id, 'quantity')) - $amount < 0) {
+        if ((Db::getValue('garden', ['id', $id], 'quantity')) - $amount < 0) {
             return 'Kiekis negali būti neigiamas.';
         }
         Db::subtractValue('garden', $id, 'quantity', $amount);

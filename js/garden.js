@@ -51,6 +51,7 @@ document.querySelectorAll('.plantNew button')[0].addEventListener('click', (e) =
                 <div class='about'>
                     Nr: ${data.id}<br>
                     Kiekis: 0<br>
+                    Kaina/vnt.: ${data.currentPrice}<br>
                     <div class='uproot' id='${data.id}'><p>Išrauti</p></div> 
                 </div>
                 </div>`);

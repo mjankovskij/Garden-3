@@ -1,6 +1,20 @@
 <?php
-require_once __DIR__ . '/config.php'; 
-require_once __DIR__ . '/axios.php'; 
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/axios.php';
+
+if (isset($url[5]) && isset($url[6]) && $url[5] == 'setCurrency') {
+    $exists = false;
+    foreach (Currency::$symbol as $key => $_) {
+        if ($key == $url[6]) {
+            $exists = true;
+        }
+    }
+    if($exists){
+        setcookie('garden_currency', $url[6], time() + 365 * 24 * 60 * 60, "/");
+
+        Api::redirect(URL.'/'.(PAGE??''));
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,8 +30,20 @@ require_once __DIR__ . '/axios.php';
 
 <body>
     <header>
+<div class="currency">
+<form>
+        <label for="currency">Valiuta:</label>
+        <select name="currency" onchange="location = this.value;">
+        <?php foreach (Currency::$symbol as $key => $item): ?>
+
+        <option value="<?= URL.'/'.(PAGE??'').'/setCurrency/'.$key ?>"><?= $key.' '.$item ?></option>
+            
+            <?php endforeach ?>
+        </select>
+</div>
+
         <nav>
-        <?= App::links(); ?>
+            <?= App::links(); ?>
         </nav>
     </header>
     <main>

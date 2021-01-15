@@ -199,3 +199,9 @@ option {
         top: 100px;
     }
 }
+
+.currency {
+    float: left;
+    margin: 0 20px;
+    padding: 2px;
+}
