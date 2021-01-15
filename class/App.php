@@ -17,4 +17,9 @@ class App
             include_once DIR . '\pages\garden.php';
         }
     }
+
+    public static function redirect($link)
+    {
+        return header("Location: $link");
+    }
 }

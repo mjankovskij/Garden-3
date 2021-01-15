@@ -4,9 +4,9 @@ class Plants
 {
     private $id, $type, $img, $quantity, $willGrow;
     private static $plants = [
-        'Cucumber' => ['min' => 10, 'max' => 20, 'price' => 1],
-        'Tomato' => ['min' => 1, 'max' => 10, 'price' => 2],
-        'Pepper' => ['min' => 1, 'max' => 5, 'price' => 3]
+        'Cucumber' => ['min' => 10, 'max' => 20, 'price' => 2],
+        'Tomato' => ['min' => 1, 'max' => 10, 'price' => 1.5],
+        'Pepper' => ['min' => 1, 'max' => 5, 'price' => 2.4]
     ];
 
     public function getPrice()

@@ -11,8 +11,7 @@ if (isset($url[5]) && isset($url[6]) && $url[5] == 'setCurrency') {
     }
     if($exists){
         setcookie('garden_currency', $url[6], time() + 365 * 24 * 60 * 60, "/");
-
-        Api::redirect(URL.'/'.(PAGE??''));
+        App::redirect(URL.'/'.(PAGE??''));
     }
 }
 ?>
@@ -34,9 +33,10 @@ if (isset($url[5]) && isset($url[6]) && $url[5] == 'setCurrency') {
 <form>
         <label for="currency">Valiuta:</label>
         <select name="currency" onchange="location = this.value;">
+        <option value="">Pasirinkite</option>
         <?php foreach (Currency::$symbol as $key => $item): ?>
 
-        <option value="<?= URL.'/'.(PAGE??'').'/setCurrency/'.$key ?>"><?= $key.' '.$item ?></option>
+        <option value="<?= URL.'/'.(PAGE??'')."/setCurrency/$key" ?>"><?= $key.' '.$item ?></option>
             
             <?php endforeach ?>
         </select>
