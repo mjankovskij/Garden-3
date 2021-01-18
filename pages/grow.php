@@ -1,4 +1,8 @@
-<?php defined('DOOR_BELL') || die('Cheater'); ?>
+<?php
+defined('DOOR_BELL') || include_once '../404.php';
+Controller\Header::render();
+?>
+
 <form id='growAll'>
     <div class="plantNew">
         <button type="button">Auginti</button>
@@ -18,4 +22,10 @@
     </div>
 </form>
 
+</main>
+</body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="<?= URL ?>/js/grow.js"></script>
+
+</html>

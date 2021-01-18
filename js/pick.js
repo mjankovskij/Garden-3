@@ -14,7 +14,7 @@ for (let i = 0; i < DOM1.length; i++) {
                     id: id,
                     quantity: quantity,
                 },
-                url: './pickPlants',
+                url: './pick/pick',
             })
             .then(function() {
                 document.querySelectorAll('.about span')[i].innerText = max - quantity;
@@ -44,7 +44,7 @@ for (let i = 0; i < DOM2.length; i++) {
                     id: id,
                     quantity: max,
                 },
-                url: './pickPlants',
+                url: './pick/pick',
             })
             .then(function() {
                 document.querySelectorAll('.about span')[i].innerText = 0;

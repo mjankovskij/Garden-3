@@ -12,7 +12,7 @@ DOM.addEventListener('click', (e) => {
             data: {
                 obj: obj
             },
-            url: './growAll',
+            url: './grow/growAll',
         })
         .then(function(response) {
             const data = response.data.message;

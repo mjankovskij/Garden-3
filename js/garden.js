@@ -10,7 +10,7 @@ function setUproot(length) {
                     data: {
                         id: id,
                     },
-                    url: './uproot',
+                    url: './garden/uproot',
                 })
                 .then(function(response) {
                     document.querySelector(`#p${id}.plant`).style.opacity = '0.2';
@@ -41,7 +41,7 @@ document.querySelectorAll('.plantNew button')[0].addEventListener('click', (e) =
                 type: type,
                 quantity: quantity,
             },
-            url: './plantNew',
+            url: './garden/plantNew',
         })
         .then(function(response) {
             for (let i = 0; i < response.data.message.length; i++) {

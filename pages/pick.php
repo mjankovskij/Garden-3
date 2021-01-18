@@ -1,4 +1,8 @@
-<?php defined('DOOR_BELL') || die('Cheater'); ?>
+<?php
+defined('DOOR_BELL') || include_once '../404.php';
+Controller\Header::render();
+?>
+
 <div class="plants">
     <?php foreach (Db::getObjects(['table'  => 'garden', 'sort' => 'DESC']) as $obj) : ;?>
         <div class='plant' id='p<?= $obj->getId() ?>'>
@@ -19,4 +23,11 @@
     <?php endforeach ?>
 </div>
 
+
+</main>
+</body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="<?= URL ?>/js/pick.js"></script>
+
+</html>

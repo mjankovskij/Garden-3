@@ -7,7 +7,8 @@
     }],
     "autoload": {
         "psr-4": {
-            "": "class/"
+            "": "class/",
+            "Controller\\": "class/controllers"
         }
     },
     "require": {}
