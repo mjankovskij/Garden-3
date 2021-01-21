@@ -20,7 +20,8 @@ class Db
         if (isset($obj['order'])) $_order = "ORDER by $obj[order]";
         if (isset($obj['sort'])) $_sort = $obj['sort'];
         if (isset($obj['limit'])) $_limit = "LIMIT $obj[limit]";
-        $quer = self::conn()->query("Select * FROM $_table $_order $_sort $_limit");
+        $quer = self::conn()->prepare("Select * FROM $_table $_order $_sort $_limit");
+        $quer->execute();
         $objects = $quer->fetchAll(PDO::FETCH_CLASS, 'Plants');
         // foreach ($objects as &$item) $item = new $item->type;
         // _c($objects);
@@ -84,6 +85,7 @@ class Db
         $keys = implode(', ', $array);
         $sql = "INSERT INTO $table ($keys) VALUES ($items)";
         Db::conn()->prepare($sql)->execute($data);
+        // Db::conn()->query($sql);
     }
 
     public final static function delete($table, $id)
