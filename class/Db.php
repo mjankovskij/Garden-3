@@ -67,14 +67,14 @@ class Db
 
     public final static function addValue($table, $id, $value, $amount)
     {
-        $sql = "UPDATE $table SET $value = $value + $amount WHERE id = '$id'";
-        self::conn()->prepare($sql)->execute([$value]);
+        $sql = "UPDATE $table SET $value = $value + $amount WHERE id = ?";
+        self::conn()->prepare($sql)->execute([$id]);
     }
 
     public final static function subtractValue($table, $id, $value, $amount)
     {
-        $sql = "UPDATE $table SET $value = $value - $amount WHERE id = '$id'";
-        self::conn()->prepare($sql)->execute([$value]);
+        $sql = "UPDATE $table SET $value = $value - $amount WHERE id = ?";
+        self::conn()->prepare($sql)->execute([$id]);
     }
 
     public final static function insert($table, $data)
@@ -90,6 +90,6 @@ class Db
 
     public final static function delete($table, $id)
     {
-        self::conn()->prepare("DELETE FROM $table WHERE id='$id'")->execute();
+        self::conn()->prepare("DELETE FROM $table WHERE id = ?")->execute([$id]);
     }
 }
